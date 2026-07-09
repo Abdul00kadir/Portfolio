@@ -41,7 +41,7 @@ export default function Footer() {
         {/* Logo and Copyright Info */}
         <div className="flex flex-col sm:flex-row items-center gap-4 text-center sm:text-left">
           <div className="w-8 h-8 rounded-lg bg-gradient-to-tr from-primary to-secondary flex items-center justify-center text-darkBg font-black text-xs font-grotesk">
-            AK
+            AI
           </div>
           <div>
             <p className="text-xs text-slate-500 font-semibold tracking-wider uppercase font-grotesk">
