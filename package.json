@@ -2,13 +2,16 @@
   "name": "port",
   "private": true,
   "version": "0.0.0",
+  "homepage": "https://Abdul00kadir.github.io/portfolio",
   "type": "module",
-  "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "lint": "oxlint",
-    "preview": "vite preview"
-  },
+ "scripts": {
+  "dev": "vite",
+  "build": "vite build",
+  "lint": "oxlint",
+  "preview": "vite preview",
+  "predeploy": "npm run build",
+  "deploy": "gh-pages -d dist"
+}
   "dependencies": {
     "@emailjs/browser": "^4.4.1",
     "framer-motion": "^12.42.2",
