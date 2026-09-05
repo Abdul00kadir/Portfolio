@@ -1,23 +1,20 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, useMotionValue, useSpring, AnimatePresence } from 'framer-motion';
 
 export default function CustomCursor() {
-  const [hovered, setHovered] = useState(false);
+  const [hoverType, setHoverType] = useState(null); // 'profile', 'cta', 'label', 'card', 'generic', null
   const [clickRipples, setClickRipples] = useState([]);
   const [isVisible, setIsVisible] = useState(false);
   const [isMobile, setIsMobile] = useState(true);
 
-  // Mouse coordinates using MotionValues
   const mouseX = useMotionValue(-100);
   const mouseY = useMotionValue(-100);
 
-  // Spring animations for a smooth lag/trail effect
-  const springConfig = { damping: 40, stiffness: 400, mass: 0.4 };
+  const springConfig = { damping: 35, stiffness: 350, mass: 0.4 };
   const trailX = useSpring(mouseX, springConfig);
   const trailY = useSpring(mouseY, springConfig);
 
   useEffect(() => {
-    // Detect mobile/touch devices
     const checkDevice = () => {
       const isTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
       const isMobileScreen = window.innerWidth < 1024;
@@ -29,26 +26,30 @@ export default function CustomCursor() {
 
     if (isMobile) return;
 
-    // Track mouse movement
     const moveCursor = (e) => {
       mouseX.set(e.clientX);
       mouseY.set(e.clientY);
       if (!isVisible) setIsVisible(true);
     };
 
-    // Toggle custom-cursor-active class to hide standard cursor on body
     document.body.classList.add('custom-cursor-active');
 
-    // Handle mouse leaves/enters viewport
     const handleMouseLeave = () => setIsVisible(false);
     const handleMouseEnter = () => setIsVisible(true);
 
-    // Global listener for hover interactions
     const handleMouseOver = (e) => {
       const target = e.target;
       if (!target) return;
 
-      const isInteractive = 
+      if (target.closest('.interactive-profile')) {
+        setHoverType('profile');
+      } else if (target.closest('.interactive-cta')) {
+        setHoverType('cta');
+      } else if (target.closest('.interactive-label')) {
+        setHoverType('label');
+      } else if (target.closest('.interactive-card') || target.closest('.product-card')) {
+        setHoverType('card');
+      } else if (
         target.tagName === 'A' ||
         target.tagName === 'BUTTON' ||
         target.closest('a') ||
@@ -56,10 +57,9 @@ export default function CustomCursor() {
         target.closest('input') ||
         target.closest('textarea') ||
         target.closest('.interactive-target') ||
-        target.closest('[role="button"]');
-
-      if (isInteractive) {
-        setHovered(true);
+        target.closest('[role="button"]')
+      ) {
+        setHoverType('generic');
       }
     };
 
@@ -68,6 +68,11 @@ export default function CustomCursor() {
       if (!target) return;
 
       const isInteractive = 
+        target.closest('.interactive-profile') ||
+        target.closest('.interactive-cta') ||
+        target.closest('.interactive-label') ||
+        target.closest('.interactive-card') ||
+        target.closest('.product-card') ||
         target.tagName === 'A' ||
         target.tagName === 'BUTTON' ||
         target.closest('a') ||
@@ -78,11 +83,10 @@ export default function CustomCursor() {
         target.closest('[role="button"]');
 
       if (isInteractive) {
-        setHovered(false);
+        setHoverType(null);
       }
     };
 
-    // Click Ripple System
     const handleClick = (e) => {
       const newRipple = {
         id: Date.now(),
@@ -91,10 +95,9 @@ export default function CustomCursor() {
       };
       setClickRipples((prev) => [...prev, newRipple]);
 
-      // Remove after animation finishes
       setTimeout(() => {
         setClickRipples((prev) => prev.filter((r) => r.id !== newRipple.id));
-      }, 800);
+      }, 700);
     };
 
     window.addEventListener('mousemove', moveCursor);
@@ -118,33 +121,54 @@ export default function CustomCursor() {
 
   if (isMobile || !isVisible) return null;
 
+  const getRingStyles = () => {
+    switch (hoverType) {
+      case 'profile':
+        return 'w-16 h-16 bg-emerald-500/10 border-emerald-500 shadow-green-subtle';
+      case 'cta':
+        return 'w-12 h-12 bg-slate-900/10 border-slate-900 shadow-sm';
+      case 'label':
+        return 'w-14 h-14 bg-amber-500/10 border-amber-500 shadow-sm';
+      case 'card':
+        return 'w-14 h-14 bg-emerald-500/5 border-emerald-400/80 shadow-sm';
+      case 'generic':
+        return 'w-12 h-12 bg-emerald-500/10 border-emerald-600 shadow-sm';
+      default:
+        return 'w-8 h-8 border-slate-400/60 bg-transparent';
+    }
+  };
+
   return (
     <div className="fixed inset-0 pointer-events-none z-[9999] overflow-hidden">
-      {/* Outer Spring Trail Ring */}
+      {/* Outer Dynamic Ring */}
       <motion.div
-        className={`absolute rounded-full border ${
-          hovered 
-            ? 'w-14 h-14 bg-secondary/10 border-secondary shadow-neon-cyan' 
-            : 'w-8 h-8 border-primary bg-transparent shadow-neon-emerald'
-        }`}
+        className={`absolute rounded-full border transition-all duration-200 ${getRingStyles()}`}
         style={{
           x: trailX,
           y: trailY,
-          translateX: hovered ? '-50%' : '-50%',
-          translateY: hovered ? '-50%' : '-50%',
+          translateX: '-50%',
+          translateY: '-50%',
           left: 0,
           top: 0,
         }}
         animate={{
-          scale: hovered ? 1.2 : 1,
+          scale: hoverType ? 1.2 : 1,
         }}
-        transition={{ type: 'spring', stiffness: 300, damping: 25 }}
+        transition={{ type: 'spring', stiffness: 320, damping: 24 }}
       />
 
       {/* Inner Pinpoint Dot */}
       <motion.div
-        className={`absolute w-2 h-2 rounded-full ${
-          hovered ? 'bg-secondary' : 'bg-primary'
+        className={`absolute w-2 h-2 rounded-full transition-colors ${
+          hoverType === 'profile' 
+            ? 'bg-emerald-600' 
+            : hoverType === 'label'
+            ? 'bg-amber-500'
+            : hoverType === 'card'
+            ? 'bg-emerald-600'
+            : hoverType
+            ? 'bg-slate-900'
+            : 'bg-slate-800'
         }`}
         style={{
           x: mouseX,
@@ -156,12 +180,12 @@ export default function CustomCursor() {
         }}
       />
 
-      {/* Click Ripple Effects */}
+      {/* Click Ripples */}
       <AnimatePresence>
         {clickRipples.map((ripple) => (
           <motion.span
             key={ripple.id}
-            className="absolute rounded-full border border-primary/45 bg-primary/5 pointer-events-none"
+            className="absolute rounded-full border border-emerald-500/40 bg-emerald-500/5 pointer-events-none"
             initial={{
               width: 0,
               height: 0,
@@ -172,12 +196,12 @@ export default function CustomCursor() {
               opacity: 1,
             }}
             animate={{
-              width: 120,
-              height: 120,
+              width: 90,
+              height: 90,
               opacity: 0,
             }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.6, ease: 'easeOut' }}
+            transition={{ duration: 0.5, ease: 'easeOut' }}
             style={{ left: 0, top: 0 }}
           />
         ))}

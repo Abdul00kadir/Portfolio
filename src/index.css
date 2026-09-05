@@ -2,20 +2,19 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Base Reset & Custom Variables */
 :root {
-  --color-emerald: 34, 197, 94;
-  --color-cyan: 6, 182, 212;
+  --color-primary: 22, 163, 74;
 }
 
 html {
   scroll-behavior: smooth;
-  background-color: #05070A;
+  background-color: #F8FAFC;
+  color-scheme: light;
 }
 
 body {
-  background-color: #05070A;
-  color: #F1F5F9;
+  background-color: #F8FAFC;
+  color: #0B1220;
   font-family: 'Inter', sans-serif;
   overflow-x: hidden;
 }
@@ -26,24 +25,24 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  background: #05070A;
+  background: #F8FAFC;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(34, 197, 94, 0.3);
+  background: #CBD5E1;
   border-radius: 4px;
-  border: 2px solid #05070A;
+  border: 2px solid #F8FAFC;
   transition: all 0.3s ease;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(34, 197, 94, 0.6);
+  background: #94A3B8;
 }
 
-/* Custom Text Selection */
+/* Selection */
 ::selection {
-  background: rgba(34, 197, 94, 0.3);
-  color: #22C55E;
+  background: #DCFCE7;
+  color: #15803D;
 }
 
 /* Lenis Scroll Smooth Overrides */
@@ -67,64 +66,51 @@ html.lenis, html.lenis body {
   pointer-events: none;
 }
 
-/* Glassmorphism & Custom Glows */
-.glass-card {
-  background: rgba(10, 15, 26, 0.45);
+/* Clean Product UI Card Styles */
+.product-card {
+  background: #FFFFFF;
+  border: 1px solid rgba(226, 232, 240, 0.85);
+  box-shadow: 0 1px 3px 0 rgba(11, 18, 32, 0.03);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.product-card:hover {
+  border-color: rgba(203, 213, 225, 1);
+  box-shadow: 0 16px 32px -10px rgba(11, 18, 32, 0.08);
+}
+
+.glass-navbar-light {
+  background: rgba(255, 255, 255, 0.85);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-bottom: 1px solid rgba(226, 232, 240, 0.8);
 }
 
-.glass-card-emerald {
-  background: rgba(10, 15, 26, 0.45);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(34, 197, 94, 0.15);
+/* Futuristic Warm-to-Green Accent Gradient Text */
+.text-gradient-warm-green {
+  background: linear-gradient(135deg, #F97316 0%, #F59E0B 35%, #22C55E 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
-.glass-card-cyan {
-  background: rgba(10, 15, 26, 0.45);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(6, 182, 212, 0.15);
+/* Profile Image Desaturated-to-Color Smooth Filter Transition */
+.profile-portrait-filter {
+  filter: grayscale(100%) contrast(1.05) brightness(0.98);
+  transition: filter 600ms cubic-bezier(0.16, 1, 0.3, 1), transform 600ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.glass-navbar {
-  background: rgba(5, 7, 10, 0.6);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+.group:hover .profile-portrait-filter,
+.profile-portrait-filter:hover {
+  filter: grayscale(0%) saturate(1.18) brightness(1.04);
+  transform: scale(1.03);
 }
 
-.neon-border-emerald {
-  box-shadow: 0 0 15px rgba(34, 197, 94, 0.15), inset 0 0 15px rgba(34, 197, 94, 0.05);
-}
-
-.neon-border-cyan {
-  box-shadow: 0 0 15px rgba(6, 182, 212, 0.15), inset 0 0 15px rgba(6, 182, 212, 0.05);
-}
-
-/* Glow Text Utilities */
-.glow-text-emerald {
-  text-shadow: 0 0 12px rgba(34, 197, 94, 0.4);
-}
-
-.glow-text-cyan {
-  text-shadow: 0 0 12px rgba(6, 182, 212, 0.4);
-}
-
-/* Grid & Noise Overlays */
-.bg-grid-overlay {
-  background-size: 40px 40px;
+/* Technical Grid Overlay */
+.bg-grid-overlay-light {
+  background-size: 48px 48px;
   background-image: 
-    linear-gradient(to right, rgba(255, 255, 255, 0.015) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
-}
-
-.noise-overlay {
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
-  opacity: 0.02;
-  pointer-events: none;
+    linear-gradient(to right, rgba(11, 18, 32, 0.035) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(11, 18, 32, 0.035) 1px, transparent 1px);
 }
 
 /* Layout overrides */
@@ -134,9 +120,19 @@ html.lenis, html.lenis body {
   flex-direction: column;
 }
 
-/* Hide standard cursor if on desktop with hover features support */
+/* Custom Cursor active override */
 @media (hover: hover) and (pointer: fine) {
   body.custom-cursor-active * {
     cursor: none !important;
+  }
+}
+
+/* Accessibility: Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }

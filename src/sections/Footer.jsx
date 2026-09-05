@@ -1,12 +1,11 @@
 import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
 import { FaArrowUp } from 'react-icons/fa';
+import { SOCIAL_LINKS } from '../constants';
 import Magnetic from '../components/Magnetic';
 
 export default function Footer() {
   const [scrollProgress, setScrollProgress] = useState(0);
 
-  // Monitor scroll percent
   useEffect(() => {
     const handleScroll = () => {
       const scrollHeight = document.documentElement.scrollHeight;
@@ -29,49 +28,66 @@ export default function Footer() {
     }
   };
 
-  // SVG circular path settings
   const radius = 18;
   const circumference = 2 * Math.PI * radius;
   const strokeDashoffset = circumference - (scrollProgress / 100) * circumference;
 
   return (
-    <footer className="w-full py-10 px-6 lg:px-12 border-t border-white/5 bg-[#05070A]/80 z-20 relative text-left">
-      <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
+    <footer className="w-full py-12 px-6 lg:px-12 border-t border-slate-200 bg-white z-20 relative text-left">
+      <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-8">
         
-        {/* Logo and Copyright Info */}
+        {/* Brand & Copyright */}
         <div className="flex flex-col sm:flex-row items-center gap-4 text-center sm:text-left">
-          <div className="w-8 h-8 rounded-lg bg-gradient-to-tr from-primary to-secondary flex items-center justify-center text-darkBg font-black text-xs font-grotesk">
-            AI
+          <div className="w-9 h-9 rounded-lg bg-slate-900 flex items-center justify-center text-white font-grotesk font-bold text-xs">
+            AK
           </div>
           <div>
-            <p className="text-xs text-slate-500 font-semibold tracking-wider uppercase font-grotesk">
-              &copy; {new Date().getFullYear()} Abdul Kadir. All rights reserved.
+            <p className="text-xs font-grotesk font-bold text-slate-900 uppercase tracking-wider">
+              Abdul Kadir &bull; Software Developer
             </p>
-            <p className="text-[10px] text-slate-600 mt-0.5">
-              Handcrafted in India. Powered by React, Tailwind & Framer Motion.
+            <p className="text-xs text-slate-500 mt-1">
+              &copy; {new Date().getFullYear()} All rights reserved. Handcrafted with React, Tailwind CSS & Framer Motion.
             </p>
           </div>
         </div>
 
-        {/* Back to top scroll progress button */}
-        <div className="flex items-center">
-          <Magnetic range={30} strength={0.3}>
+        {/* Social Links & Back to Top Button */}
+        <div className="flex items-center gap-6">
+          <div className="flex items-center gap-3">
+            {SOCIAL_LINKS.map((soc) => {
+              const Icon = soc.icon;
+              return (
+                <a
+                  key={soc.name}
+                  href={soc.url}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="text-slate-400 hover:text-primary transition-colors text-base"
+                  aria-label={soc.name}
+                >
+                  <Icon />
+                </a>
+              );
+            })}
+          </div>
+
+          <div className="h-6 w-[1px] bg-slate-200 hidden sm:block" />
+
+          {/* Back to top scroll button */}
+          <Magnetic range={25} strength={0.25}>
             <button
               onClick={handleScrollToTop}
-              className="relative w-12 h-12 rounded-full border border-white/5 bg-white/5 hover:border-primary/20 flex items-center justify-center text-slate-400 hover:text-primary transition-colors duration-300 group cursor-pointer"
-              aria-label="Back to Top"
+              className="relative w-11 h-11 rounded-full border border-slate-200 bg-slate-50 hover:border-primary flex items-center justify-center text-slate-600 hover:text-primary transition-all group cursor-pointer"
+              aria-label="Scroll Back to Top"
             >
-              {/* Circular SVG Progress wheel */}
               <svg className="absolute -rotate-90 w-full h-full p-1" viewBox="0 0 44 44">
-                {/* Track circle (Subtle outline) */}
                 <circle
                   cx="22"
                   cy="22"
                   r={radius}
-                  className="stroke-white/5 fill-transparent"
+                  className="stroke-slate-200 fill-transparent"
                   strokeWidth="2.5"
                 />
-                {/* Glowing progress circle */}
                 <circle
                   cx="22"
                   cy="22"
@@ -83,9 +99,7 @@ export default function Footer() {
                   strokeLinecap="round"
                 />
               </svg>
-
-              {/* Up Arrow Icon */}
-              <FaArrowUp className="text-sm transition-transform duration-300 group-hover:-translate-y-1" />
+              <FaArrowUp className="text-xs transition-transform duration-200 group-hover:-translate-y-0.5" />
             </button>
           </Magnetic>
         </div>

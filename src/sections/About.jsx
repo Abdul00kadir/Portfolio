@@ -1,231 +1,162 @@
-import { useRef, useState, useEffect } from 'react';
-import { motion, useInView } from 'framer-motion';
-import { FaUser, FaMapMarkerAlt, FaEnvelope, FaBriefcase, FaCalendarAlt, FaChevronRight } from 'react-icons/fa';
+import { motion } from 'framer-motion';
+import { FaUser, FaMapMarkerAlt, FaEnvelope, FaBriefcase, FaGraduationCap } from 'react-icons/fa';
 import TiltCard from '../components/TiltCard';
 
-// Animated Count Component using requestAnimationFrame and useInView
-function Counter({ value, duration = 1.5 }) {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, amount: 0.5 });
-  const [count, setCount] = useState(0);
-
-  useEffect(() => {
-    if (!isInView) return;
-
-    // Extract numeric values (e.g. "10+" -> 10)
-    const numericStr = value.replace(/[^0-9]/g, '');
-    const target = parseInt(numericStr, 10);
-
-    if (isNaN(target)) {
-      setCount(value);
-      return;
-    }
-
-    let startTimestamp = null;
-    const step = (timestamp) => {
-      if (!startTimestamp) startTimestamp = timestamp;
-      const progress = Math.min((timestamp - startTimestamp) / (duration * 1000), 1);
-      
-      // Quadratic ease-out formula
-      const easeProgress = 1 - (1 - progress) * (1 - progress);
-      setCount(Math.floor(easeProgress * target));
-
-      if (progress < 1) {
-        window.requestAnimationFrame(step);
-      } else {
-        setCount(target);
-      }
-    };
-
-    window.requestAnimationFrame(step);
-  }, [isInView, value, duration]);
-
-  // Append original sign (e.g. "+", "K") back to animated number
-  const suffix = value.replace(/[0-9]/g, '');
-  return <span ref={ref}>{count}{suffix}</span>;
-}
-
 export default function About() {
-  const [isExpanded, setIsExpanded] = useState(false);
-
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      transition: {
-        staggerChildren: 0.15,
-      },
+      transition: { staggerChildren: 0.15 },
     },
   };
 
   const itemVariants = {
-    hidden: { y: 40, opacity: 0 },
-    visible: { y: 0, opacity: 1, transition: { duration: 0.6, ease: 'easeOut' } },
+    hidden: { y: 20, opacity: 0 },
+    visible: { y: 0, opacity: 1, transition: { duration: 0.5, ease: 'easeOut' } },
   };
 
-  const bioText = "I'm a BCA graduate from IFTM University, Moradabad. I love turning design ideas into fully-interactive, real-world web applications. I focus on structural integrity, semantic coding, and interactive fluidity. I spend my time exploring frontend engineering, backend integrations, API optimizations, and custom web animations.";
-  
-  const extendedBioText = " My programming journey began with standard computer systems, which evolved into a core passion for modern JavaScript stack components. I specialize in building SPAs with React, styling with Tailwind CSS, animating with Framer Motion, and creating backends using Node.js, Express.js, and MongoDB. I enjoy problem-solving and refining visual feedback hooks to keep layouts engaging.";
-
   return (
-    <section id="about" className="py-24 px-6 lg:px-12 relative flex items-center justify-center">
+    <section id="about" className="py-24 px-6 lg:px-12 relative flex justify-center bg-slate-50/60 border-y border-slate-200/60">
       <div className="max-w-7xl w-full z-10">
-        
-        {/* Section Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-100px' }}
-          className="flex items-center gap-3 mb-16 justify-center lg:justify-start"
-        >
-          <span className="w-10 h-[1px] bg-primary" />
-          <h2 className="font-grotesk text-3xl md:text-4xl font-bold tracking-tight text-white">
-            About <span className="text-primary glow-text-emerald">Me</span>
-          </h2>
-        </motion.div>
 
-        {/* Two Column Layout */}
-        <motion.div 
+        {/* Section Header */}
+        <div className="flex flex-col items-start max-w-2xl mb-16 text-left">
+          <motion.div
+            initial={{ opacity: 0, y: 15 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="flex items-center gap-2.5 mb-3"
+          >
+            <span className="w-8 h-[2px] bg-primary rounded-full" />
+            <span className="text-xs font-grotesk font-bold uppercase tracking-wider text-primary">
+              HUMAN STORY &bull; STATE 06 / 06
+            </span>
+          </motion.div>
+
+          <motion.h2
+            initial={{ opacity: 0, y: 15 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.1 }}
+            className="font-grotesk text-3xl sm:text-4xl font-bold tracking-tight text-slate-900 mb-4 uppercase"
+          >
+            ABOUT ME
+          </motion.h2>
+        </div>
+
+        {/* Two Column Narrative Layout */}
+        <motion.div
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, margin: '-100px' }}
-          className="grid grid-cols-1 lg:grid-cols-12 gap-10"
+          viewport={{ once: true, margin: '-50px' }}
+          className="grid grid-cols-1 lg:grid-cols-12 gap-10 text-left items-stretch"
         >
-          
-          {/* Left Column: Info Grid Card */}
-          <motion.div variants={itemVariants} className="lg:col-span-5 h-full">
-            <TiltCard 
-              className="glass-card rounded-[24px] p-8 border-white/5 h-full relative" 
-              glareColor="rgba(6, 182, 212, 0.12)"
+
+          {/* Left Column: Profile Card */}
+          <motion.div variants={itemVariants} className="lg:col-span-4 h-full">
+            <TiltCard
+              tiltMax={5}
+              glareColor="rgba(22, 163, 74, 0.05)"
+              className="product-card rounded-2xl p-7 h-full flex flex-col justify-between interactive-target"
             >
-              <div className="flex items-center justify-between mb-8">
-                <h3 className="font-grotesk text-xl font-bold text-white tracking-wide">Personal Details</h3>
-                <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary shadow-neon-emerald/20">
-                  <FaUser />
+              <div>
+                <div className="flex items-center justify-between mb-8">
+                  <h3 className="font-grotesk text-xl font-bold text-slate-900">Developer Profile</h3>
+                  <div className="w-10 h-10 rounded-xl bg-emerald-50 text-primary flex items-center justify-center text-base">
+                    <FaUser />
+                  </div>
+                </div>
+
+                <div className="space-y-6">
+                  <div className="flex items-center gap-4">
+                    <div className="w-9 h-9 rounded-lg bg-slate-100 flex items-center justify-center text-slate-500 text-sm">
+                      <FaGraduationCap />
+                    </div>
+                    <div>
+                      <p className="text-[11px] text-slate-500 font-semibold uppercase tracking-wider font-grotesk">Education</p>
+                      <p className="text-sm font-semibold text-slate-900">BCA — IFTM University</p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-4">
+                    <div className="w-9 h-9 rounded-lg bg-slate-100 flex items-center justify-center text-slate-500 text-sm">
+                      <FaMapMarkerAlt />
+                    </div>
+                    <div>
+                      <p className="text-[11px] text-slate-500 font-semibold uppercase tracking-wider font-grotesk">Location</p>
+                      <p className="text-sm font-semibold text-slate-900">Moradabad, India</p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-4">
+                    <div className="w-9 h-9 rounded-lg bg-slate-100 flex items-center justify-center text-slate-500 text-sm">
+                      <FaEnvelope />
+                    </div>
+                    <div>
+                      <p className="text-[11px] text-slate-500 font-semibold uppercase tracking-wider font-grotesk">Email</p>
+                      <a href="mailto:788abdulkadir788@gmail.com" className="text-sm font-semibold text-slate-900 hover:text-primary transition-colors">
+                        788abdulkadir788@gmail.com
+                      </a>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-4">
+                    <div className="w-9 h-9 rounded-lg bg-slate-100 flex items-center justify-center text-slate-500 text-sm">
+                      <FaBriefcase />
+                    </div>
+                    <div>
+                      <p className="text-[11px] text-slate-500 font-semibold uppercase tracking-wider font-grotesk">Focus Area</p>
+                      <p className="text-sm font-semibold text-primary">Software & Business Systems</p>
+                    </div>
+                  </div>
                 </div>
               </div>
-
-              {/* Info Rows */}
-              <div className="space-y-6">
-                <div className="flex items-center gap-4 group">
-                  <div className="w-10 h-10 rounded-lg bg-white/5 flex items-center justify-center text-slate-400 group-hover:text-primary transition-colors duration-300">
-                    <FaCalendarAlt />
-                  </div>
-                  <div className="text-left">
-                    <p className="text-xs text-slate-500 font-semibold uppercase tracking-wider">Age</p>
-                    <p className="text-sm font-semibold text-slate-200">20</p>
-                  </div>
-                </div>
-
-                <div className="flex items-center gap-4 group">
-                  <div className="w-10 h-10 rounded-lg bg-white/5 flex items-center justify-center text-slate-400 group-hover:text-primary transition-colors duration-300">
-                    <FaMapMarkerAlt />
-                  </div>
-                  <div className="text-left">
-                    <p className="text-xs text-slate-500 font-semibold uppercase tracking-wider">Location</p>
-                    <p className="text-sm font-semibold text-slate-200">Moradabad, India</p>
-                  </div>
-                </div>
-
-                <div className="flex items-center gap-4 group">
-                  <div className="w-10 h-10 rounded-lg bg-white/5 flex items-center justify-center text-slate-400 group-hover:text-primary transition-colors duration-300">
-                    <FaEnvelope />
-                  </div>
-                  <div className="text-left">
-                    <p className="text-xs text-slate-500 font-semibold uppercase tracking-wider">Email</p>
-                    <a href="mailto:788abdulkadir788@gmail.com" className="text-sm font-semibold text-slate-200 hover:text-primary transition-colors">
-                      788abdulkadir788@gmail.com
-                    </a>
-                  </div>
-                </div>
-
-                <div className="flex items-center gap-4 group">
-                  <div className="w-10 h-10 rounded-lg bg-white/5 flex items-center justify-center text-slate-400 group-hover:text-primary transition-colors duration-300">
-                    <FaBriefcase />
-                  </div>
-                  <div className="text-left">
-                    <p className="text-xs text-slate-500 font-semibold uppercase tracking-wider">Freelance</p>
-                    <p className="text-sm font-semibold text-primary">Available</p>
-                  </div>
-                </div>
-              </div>
-
-              {/* Read More / Toggle Description */}
-              <button
-                onClick={() => setIsExpanded(!isExpanded)}
-                className="mt-12 inline-flex items-center gap-2 px-5 py-2.5 rounded-xl border border-white/5 bg-white/5 font-grotesk font-semibold text-sm text-slate-300 transition-all duration-300 hover:bg-primary hover:text-darkBg hover:shadow-neon-emerald hover:border-transparent group cursor-pointer"
-              >
-                {isExpanded ? 'Show Less' : 'Read More About Me'}
-                <FaChevronRight className={`text-xs transition-transform duration-300 ${isExpanded ? 'rotate-90' : 'group-hover:translate-x-1'}`} />
-              </button>
             </TiltCard>
           </motion.div>
 
-          {/* Right Column: Bio & Counter Grid */}
-          <motion.div variants={itemVariants} className="lg:col-span-7 flex flex-col justify-between gap-10">
-            
-            {/* Bio Card */}
-            <div className="text-left">
-              <p className="font-sans text-slate-300 text-base md:text-lg leading-relaxed mb-6">
-                {bioText}
-                {isExpanded && (
-                  <motion.span
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ duration: 0.3 }}
-                  >
-                    {extendedBioText}
-                  </motion.span>
-                )}
-              </p>
-            </div>
+          {/* Right Column: Editorial Narrative */}
+          <motion.div variants={itemVariants} className="lg:col-span-8">
+            <TiltCard
+              tiltMax={3}
+              glareColor="rgba(22, 163, 74, 0.04)"
+              className="product-card rounded-2xl p-8 md:p-10 h-full flex flex-col justify-between interactive-target"
+            >
+              <div className="space-y-6">
+                <h3 className="font-grotesk text-2xl sm:text-3xl font-bold text-darkCharcoal mb-2 leading-snug">
+                  I started by building web interfaces. Then I became interested in the software systems behind them.
+                </h3>
 
-            {/* Stats Counter Grid */}
-            <div className="text-left">
-              <h3 className="font-grotesk text-xl font-bold text-white mb-6">
-                My <span className="text-secondary glow-text-cyan">Stats</span>
-              </h3>
+                <p className="font-sans text-slate-600 text-base leading-relaxed">
+                  I am a Software Developer with a degree in Computer Applications (BCA) from IFTM University. My journey evolved from mastering frontend interfaces into building complex business applications, custom ERP workflows, catalog platforms, and scalable digital solutions.
+                </p>
 
-              <div className="grid grid-cols-2 gap-4">
-                
-                {/* Stat 1: Projects Completed */}
-                <TiltCard className="glass-card rounded-[24px] p-6 border-white/5" glareColor="rgba(34, 197, 94, 0.1)">
-                  <h4 className="font-grotesk text-3xl md:text-4xl font-extrabold text-white mb-2">
-                    <Counter value="3+" />
-                  </h4>
-                  <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Projects Completed</p>
-                </TiltCard>
-
-                {/* Stat 2: Commits */}
-                <TiltCard className="glass-card rounded-[24px] p-6 border-white/5" glareColor="rgba(6, 182, 212, 0.1)">
-                  <h4 className="font-grotesk text-3xl md:text-4xl font-extrabold text-white mb-2">
-                    <Counter value="100+" />
-                  </h4>
-                  <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">GitHub Commits</p>
-                </TiltCard>
-
-                {/* Stat 3: Technologies */}
-                <TiltCard className="glass-card rounded-[24px] p-6 border-white/5" glareColor="rgba(6, 182, 212, 0.1)">
-                  <h4 className="font-grotesk text-3xl md:text-4xl font-extrabold text-white mb-2">
-                    <Counter value="15+" />
-                  </h4>
-                  <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Technologies Learned</p>
-                </TiltCard>
-
-                {/* Stat 4: Open to Work */}
-                <TiltCard className="glass-card rounded-[24px] p-6 border-primary/10 border" glareColor="rgba(34, 197, 94, 0.15)">
-                  <h4 className="font-grotesk text-2xl md:text-3xl font-extrabold text-primary mb-2 flex items-center gap-1">
-                    Open <span className="text-xs">↗</span>
-                  </h4>
-                  <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">To Work</p>
-                </TiltCard>
-
+                <p className="font-sans text-slate-600 text-base leading-relaxed">
+                  I thrive on solving real-world operational problems through software engineering. Whether architecting dynamic catalog structures for commercial platforms or building data-driven application tools, my objective is always the same: delivering clean, maintainable software with exceptional usability.
+                </p>
               </div>
-            </div>
 
+              {/* Core Philosophy Pills */}
+              <div className="pt-8 mt-6 border-t border-slate-100 flex flex-wrap gap-3">
+                <span className="px-3.5 py-1.5 rounded-lg bg-slate-100 text-xs font-grotesk font-bold text-slate-700 uppercase tracking-wider">
+                  Clean Architecture
+                </span>
+                <span className="px-3.5 py-1.5 rounded-lg bg-slate-100 text-xs font-grotesk font-bold text-slate-700 uppercase tracking-wider">
+                  Business Workflows
+                </span>
+                <span className="px-3.5 py-1.5 rounded-lg bg-slate-100 text-xs font-grotesk font-bold text-slate-700 uppercase tracking-wider">
+                  Responsive Systems
+                </span>
+                <span className="px-3.5 py-1.5 rounded-lg bg-slate-100 text-xs font-grotesk font-bold text-slate-700 uppercase tracking-wider">
+                  Real-World Usability
+                </span>
+              </div>
+            </TiltCard>
           </motion.div>
+
         </motion.div>
+
       </div>
     </section>
   );

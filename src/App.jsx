@@ -1,46 +1,42 @@
 import MainLayout from './layouts/MainLayout';
 import Hero from './sections/Hero';
-import About from './sections/About';
-import Skills from './sections/Skills';
+import WhatIBuild from './sections/WhatIBuild';
 import Projects from './sections/Projects';
 import Experience from './sections/Experience';
-import Education from './sections/Education';
-import Certifications from './sections/Certifications';
-import Blog from './sections/Blog';
+import Engineering from './sections/Engineering';
+import About from './sections/About';
+import EducationCertifications from './sections/EducationCertifications';
 import Contact from './sections/Contact';
 import Footer from './sections/Footer';
 
 function App() {
   return (
     <MainLayout>
-      {/* Hero Intro landing */}
+      {/* 1. Hero Landing */}
       <Hero />
 
-      {/* Profile Bio details */}
-      <About />
+      {/* 2. What I Build - 4 Core Pillars */}
+      <WhatIBuild />
 
-      {/* Tech stack grid */}
-      <Skills />
-
-      {/* Work Portfolio grid */}
+      {/* 3. Selected Work Case Studies */}
       <Projects />
 
-      {/* Scroll Timeline work progress */}
+      {/* 4. Professional Career Progression */}
       <Experience />
 
-      {/* Left aligned luxury timeline education */}
-      <Education />
+      {/* 5. Categorized Engineering Toolkit */}
+      <Engineering />
 
-      {/* Certifications grid showcase */}
-      <Certifications />
+      {/* 6. Background & Narrative */}
+      <About />
 
-      {/* Tech insights grid blogs */}
-      <Blog />
+      {/* 7. Education & Certifications */}
+      <EducationCertifications />
 
-      {/* Contact Form with validation */}
+      {/* 8. Contact CTA */}
       <Contact />
 
-      {/* Branded copyrights & scroll progress top */}
+      {/* 9. Minimal Footer */}
       <Footer />
     </MainLayout>
   );
